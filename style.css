@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    margin: 0;
+}
+
+:root {
+    --var-width: 65px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* height: 10vh; */
+
+}
+
+h1 {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    /* border: 1px solid black; */
+    /* height: 80vh; */
+
+}
+
+.board .cell {
+    /* margin: 10px; */
+    border: 1px solid black;
+    /* padding: 20px; */
+    width: var(--var-width);
+    height: var(--var-width);
+    font-size: calc(var(--var-width) * .9);
+    text-align: center;
+    cursor: pointer;
+
+}
+
+
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3),
+.cell:nth-child(4),
+.cell:nth-child(5),
+.cell:nth-child(6),
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+    border-top: 4px solid black;
+}
+
+.cell:nth-child(9n +1) {
+    border-left: 4px solid black;
+}
+
+.cell:nth-child(9n) {
+    border-right: 4px solid black;
+}
+
+.cell:last-child,
+.cell:nth-child(80),
+.cell:nth-child(79),
+.cell:nth-child(78),
+.cell:nth-child(77),
+.cell:nth-child(76),
+.cell:nth-child(75),
+.cell:nth-child(74),
+.cell:nth-child(73) {
+    border-bottom: 4px solid black;
+}
+
+.cell:nth-child(3n) {
+    border-right: 4px solid black;
+}
+
+.cell:nth-child(19),
+.cell:nth-child(20),
+.cell:nth-child(21),
+.cell:nth-child(22),
+.cell:nth-child(23),
+.cell:nth-child(24),
+.cell:nth-child(25),
+.cell:nth-child(26),
+.cell:nth-child(27) {
+    border-bottom: 4px solid black;
+}
+
+.cell:nth-child(46),
+.cell:nth-child(47),
+.cell:nth-child(48),
+.cell:nth-child(49),
+.cell:nth-child(50),
+.cell:nth-child(51),
+.cell:nth-child(52),
+.cell:nth-child(53),
+.cell:nth-child(54) {
+    border-bottom: 4px solid black;
+}
+
+
+/* .cell:nth-child(6n +1) {
+    border-left: 4px solid black;
+} */
+
+
+
+.buttons {
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+
+    margin: 5px auto;
+    color: white;
+    text-align: center;
+    /* font-size: xx-large; */
+}
+
+.button {
+
+    background-color: black;
+
+    align-items: center;
+    width: var(--var-width);
+    height: var(--var-width);
+    font-size: calc(var(--var-width) * .8);
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+button {
+    padding: 10px;
+    font-size: 40px;
+    text-align: center;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.cell.selected {
+    background-color: blueviolet;
+    color: white;
+}
+
+.cell:hover {
+    background-color: turquoise;
+}
+
+.message {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: xx-large;
+}
+
+.show {
+    display: flex;
+}
+
+.red {
+    background-color: red;
+    color: white;
+}

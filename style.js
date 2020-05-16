@@ -7,6 +7,7 @@ const messageText = document.getElementById("messageText");
 let PUZZLE = [];
 let PUZZLE2 = [];
 let selectedCell;
+let clock;
 
 function plotGrid() {
   let hiddenCells = hideCells();
@@ -107,6 +108,15 @@ function startGame() {
   genPuz();
   swapCells();
   plotGrid();
+  anime({
+    targets: '.cell',
+    opacity:1,
+    scale: [
+      {value: .1, easing: 'easeOutSine', duration: 1000},
+      {value: 1, easing: 'easeInOutQuad', duration: 500}
+    ],
+    delay: anime.stagger(100, {grid: [9, 9], from: 'center'})
+  })
   timer();
 }
 
@@ -294,12 +304,11 @@ function timer() {
   function pad(val) {
     return val > 9 ? val : "0" + val;
   }
-  var clock = setInterval(function () {
+  clock = setInterval(function () {
     document.getElementById("seconds").innerHTML = pad(++sec % 60);
     document.getElementById("minutes").innerHTML = pad(parseInt((sec / 60) % 60, 10));
     document.getElementById("hours").innerHTML = pad(parseInt(sec / (60 * 60), 10));
   }, 1000)
-
 }
 
 

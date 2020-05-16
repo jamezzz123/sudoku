@@ -7,7 +7,9 @@
     <title>Sudoku</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Crushed&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
     <script src="style.js" defer></script>
+
 </head>
 
 <body>
@@ -118,6 +120,24 @@
 
     <div class="message show">
         <div id="messageText" class="text">YOU WIN</div>
+        <span><b>CHOOSE DIFFICULTY</b></span>
+        <div>
+            <div>
+
+                <input type="radio" name="difficulty" id="" value="easy" checked>
+                <label for="">EASY</label>
+            </div>
+            <div>
+                <input type="radio" name="difficulty" id="" value="meduim">
+                <label for="">MEDUIM</label>
+            </div>
+            <div>
+                <input type="radio" name="difficulty" id="" value="hard">
+                <label for="">HARD</label>
+            </div>
+
+        </div>
+
         <button id="startButton"></button>
     </div>
 </body>

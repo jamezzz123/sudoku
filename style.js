@@ -95,6 +95,7 @@ function restartGame() {
 }
 
 function startGame() {
+  messageImg.style.display = "none";
   PUZZLE2 = [];
   for (let index = 0; index < diff.length; index++) {
     if (diff[index].checked) {
@@ -112,9 +113,7 @@ function startGame() {
   BUTTONS.forEach((element) => {
     element.addEventListener("click", handleButtonClick);
   });
-  // document.getElementById("seconds").innerHTML = '';
-  // document.getElementById("minutes").innerHTML = '';
-  // document.getElementById("hours").innerHTML = '';
+
   Message.classList.remove("show");
   genPuz();
   swapCells();
@@ -178,10 +177,6 @@ function handleButtonClick(e) {
   if (selectedCell.id == undefined) return;
   let id = Number(selectedCell.id);
   selectedCell.innerText = e.target.innerText;
-  // if (e.target.innerText == "") {
-  //   selectedCell.classList.remove('red')
-  //   return
-  // }
   checkDuplicate(id, value);
   checkCurrectValue(id, value);
   if (checkWin()) {

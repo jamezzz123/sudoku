@@ -6,7 +6,7 @@ const startButton = document.getElementById("startButton");
 const restartButton = document.getElementById("restartGame");
 const messageText = document.getElementById("messageText");
 const diff = document.getElementsByName("diff");
-const standardHideDiff = 22;
+const standardHideDiff = 32;
 let difficulty;
 
 let PUZZLE = [];
@@ -29,7 +29,7 @@ function plotGrid() {
 
 function hideCells() {
   let Hide = [];
-  let hiddenSpaces = standardHideDiff * difficulty;
+  let hiddenSpaces = standardHideDiff + (difficulty * 10);
   for (let index = 0; index < hiddenSpaces; index++) {
     let value = Math.ceil(Math.random() * 81);
     if (Hide.includes(value)) {
@@ -96,6 +96,7 @@ function restartGame() {
 
 function startGame() {
   messageImg.style.display = "none";
+
   PUZZLE2 = [];
   for (let index = 0; index < diff.length; index++) {
     if (diff[index].checked) {
@@ -106,6 +107,8 @@ function startGame() {
     element.innerText = null;
     element.classList.remove("selected");
     element.classList.remove("selectable");
+    element.classList.remove("red");
+    element.removeEventListener('click', handleClick);
   });
   BUTTONS.forEach((element) => {
     element.removeEventListener("click", handleButtonClick);
@@ -174,11 +177,15 @@ function handleClick(e) {
 
 function handleButtonClick(e) {
   let value = e.target.innerText;
-  if (selectedCell.id == undefined) return;
+  if (selectedCell == undefined) return;
   let id = Number(selectedCell.id);
   selectedCell.innerText = e.target.innerText;
-  checkDuplicate(id, value);
+  CELLS.forEach((item) => {
+    item.classList.remove("red");
+  });
+
   checkCurrectValue(id, value);
+  checkDuplicate(id, value);
   if (checkWin()) {
     messageText.innerText = "YOU WIN";
     messageImg.style.display = "block";
@@ -201,6 +208,7 @@ function getDuplicateArrayElements(arr) {
 
 function duplicatesLogic(Arr) {
   let rowValues = [];
+
   Arr.forEach((element) => {
     let rowValue = document.getElementById(element).innerText;
     rowValues.push(rowValue);
@@ -225,9 +233,9 @@ function duplicatesLogic(Arr) {
 }
 
 function checkDuplicate(id, value) {
-  CELLS.forEach((item) => {
-    item.classList.remove("red");
-  });
+  // CELLS.forEach((item) => {
+  //   item.classList.remove("red");
+  // });
 
   //CHECK DUPLICATE ROW
   // debugger;
@@ -259,29 +267,29 @@ function checkDuplicate(id, value) {
     }
   }
   // CHECK DUPLICATE BLOCK
-  let start = 1;
-  for (let index = 1; index <= 9; index++) {
-    let block = [];
-    let val = start;
-    for (let Kndex = 1; Kndex <= 9; Kndex++) {
-      block.push(val);
-      if (val % 3 == 0) {
-        val = val + 7;
-      } else {
-        val++;
+  let begin = 1;
+  let ending;
+  for (let indexxx = 0; indexxx < 3; indexxx++) {
+    for (let indexx = 0; indexx < 3; indexx++) {
+      let block = [];
+      for (let indexxx = 1; indexxx <= 9; indexxx++) {
+        block.push(begin);
+        if (!(indexxx % 3)) {
+          begin = begin + 6;
+        }
+        begin++
       }
+      let deplicateIndex = duplicatesLogic(block);
+      if (deplicateIndex.length) {
+        addDuplicateClass(...deplicateIndex);
+      }
+      begin = block[0]
+      begin = begin + 3
+      ending = block[8] + 1
     }
-    let deplicateIndex = duplicatesLogic(block);
-    if (deplicateIndex.length) {
-      addDuplicateClass(...deplicateIndex);
-    }
-
-    if (start == 7 || start == 34) {
-      start = start + 21;
-    } else {
-      start = start + 3;
-    }
+    begin = ending
   }
+
 }
 
 function addDuplicateClass() {

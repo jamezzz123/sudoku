@@ -4,6 +4,10 @@ const Message = document.querySelector(".message");
 const startButton = document.getElementById("startButton");
 const restartButton = document.getElementById("restartGame");
 const messageText = document.getElementById("messageText");
+const diff = document.getElementsByName('diff')
+let difficulty;
+
+
 let PUZZLE = [];
 let PUZZLE2 = [];
 let selectedCell;
@@ -27,7 +31,8 @@ function plotGrid() {
 
 function hideCells() {
   let Hide = [];
-  for (let index = 0; index < 5; index++) {
+  let hiddenSpaces = 20 * difficulty;
+  for (let index = 0; index < hiddenSpaces; index++) {
     let value = Math.ceil(Math.random() * 81);
     if (Hide.includes(value)) {
       index--;
@@ -58,9 +63,8 @@ function generatePuzzle() {
       }
     }
   }
-  console.log(PUZZLE);
+  // console.log(PUZZLE);
 }
-
 
 function genPuz() {
   let notInclude = [];
@@ -92,6 +96,13 @@ function restartGame() {
 }
 
 function startGame() {
+
+  for (let index = 0; index < diff.length; index++) {
+    if (diff[index].checked) {
+      difficulty = diff[index].value
+    }
+  }
+
   CELLS.forEach((element) => {
     element.innerText = null;
     element.classList.remove('selected')
@@ -110,18 +121,29 @@ function startGame() {
   plotGrid();
   anime({
     targets: '.cell',
-    opacity:1,
-    scale: [
-      {value: .1, easing: 'easeOutSine', duration: 1000},
-      {value: 1, easing: 'easeInOutQuad', duration: 500}
+    opacity: 1,
+    scale: [{
+        value: .1,
+        easing: 'easeOutSine',
+        duration: 1000
+      },
+      {
+        value: 1,
+        easing: 'easeInOutQuad',
+        duration: 10
+      }
     ],
-    delay: anime.stagger(100, {grid: [9, 9], from: 'center'})
+    delay: anime.stagger(100, {
+      grid: [9, 9],
+      from: 'center'
+    })
   })
   timer();
 }
 
 function swapCells() {
   let swapArray = [];
+  let swapTimes = 10 * difficulty;
   for (let index = 0; index < 10; index++) {
     let firstValue = Math.ceil(Math.random() * 9);
     let secondValue = Math.ceil(Math.random() * 9);
@@ -130,7 +152,7 @@ function swapCells() {
     }
     swapArray.push([firstValue, secondValue]);
   }
-  console.log(swapArray);
+  // console.log(swapArray);
   swapArray.forEach((swap) => {
     for (let index = 0; index < PUZZLE2.length; index++) {
       if (swap.includes(PUZZLE2[index])) {
@@ -140,7 +162,7 @@ function swapCells() {
       }
     }
   });
-  console.log(PUZZLE2);
+  // console.log(PUZZLE2);
 }
 
 function handleClick(e) {
@@ -267,7 +289,7 @@ function addDuplicateClass() {
 }
 
 function removeDuplicateClass() {
-  console.log(arguments);
+  // console.log(arguments);
   for (var i in arguments) {
     document.getElementById(arguments[i]).classList.remove("red");
   }
@@ -279,7 +301,7 @@ function checkCurrectValue(id, value) {
 
     if ((index + 1) == id) {
       if (PUZZLE2[index] != value) {
-        console.log(value, "checkCurrentValue");
+        // console.log(value, "checkCurrentValue");
         addDuplicateClass(id);
       } else {
         removeDuplicateClass(id);
@@ -289,7 +311,7 @@ function checkCurrectValue(id, value) {
 }
 
 function checkWin() {
-  console.log(PUZZLE2);
+  // console.log(PUZZLE2);
   for (let index = 0; index < PUZZLE2.length; index++) {
     if (PUZZLE2[index] != document.getElementById(index + 1).innerText) {
       return false

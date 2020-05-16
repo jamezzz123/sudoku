@@ -6,16 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudoku</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crushed&display=swap" rel="stylesheet">
     <script src="style.js" defer></script>
 </head>
 
 <body>
     <div class="header">
         <h1> Sudoku Game</h1>
-        <button>RESTART</button>
+        <div class="timer">
+            <span id="hours"></span>:<span id="minutes"></span>:<span id="seconds"></span>
+        </div>
+
+        <button id="restartGame">RESTART</button>
     </div>
     <div class="board">
-        <div id="1" class="cell selected"></div>
+        <div id="1" class="cell"></div>
         <div id="2" class="cell"></div>
         <div id="3" class="cell"></div>
         <div id="4" class="cell"></div>
@@ -111,9 +116,9 @@
         <div class="button"></div>
     </div>
 
-    <div class="message">
-        <div class="text">YOU WIN</div>
-        <button>RESTART</button>
+    <div class="message show">
+        <div id="messageText" class="text">YOU WIN</div>
+        <button id="startButton"></button>
     </div>
 </body>
 

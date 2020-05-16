@@ -1,12 +1,13 @@
 const CELLS = document.querySelectorAll(".cell");
 const BUTTONS = document.querySelectorAll(".button");
 const Message = document.querySelector(".message");
+const messageImg = document.getElementById("messageImg");
 const startButton = document.getElementById("startButton");
 const restartButton = document.getElementById("restartGame");
 const messageText = document.getElementById("messageText");
-const diff = document.getElementsByName('diff')
+const diff = document.getElementsByName("diff");
+const standardHideDiff = 22;
 let difficulty;
-
 
 let PUZZLE = [];
 let PUZZLE2 = [];
@@ -18,11 +19,8 @@ function plotGrid() {
   PUZZLE2.forEach((element, index) => {
     if (hiddenCells.includes(index)) {
       document.getElementById(index + 1).innerText = null;
-      document
-        .getElementById(index + 1)
-        .addEventListener("click", handleClick);
-      document
-        .getElementById(index + 1).classList.add('selectable')
+      document.getElementById(index + 1).addEventListener("click", handleClick);
+      document.getElementById(index + 1).classList.add("selectable");
     } else {
       document.getElementById(index + 1).innerText = element;
     }
@@ -31,7 +29,7 @@ function plotGrid() {
 
 function hideCells() {
   let Hide = [];
-  let hiddenSpaces = 20 * difficulty;
+  let hiddenSpaces = standardHideDiff * difficulty;
   for (let index = 0; index < hiddenSpaces; index++) {
     let value = Math.ceil(Math.random() * 81);
     if (Hide.includes(value)) {
@@ -71,7 +69,7 @@ function genPuz() {
   let start = Math.ceil(Math.random() * 9);
   for (let index = 0; index < 3; index++) {
     for (let index2 = 0; index2 < 3; index2++) {
-      let ROW = []
+      let ROW = [];
       for (let index3 = 0; index3 < 9; index3++) {
         ROW.push(start);
         start++;
@@ -88,56 +86,58 @@ function genPuz() {
       }
     }
   }
-
 }
 
 function restartGame() {
-  Message.classList.add('show');
+  clearInterval(clock);
+  messageText.innerText = "";
+  Message.classList.add("show");
 }
 
 function startGame() {
-
+  PUZZLE2 = [];
   for (let index = 0; index < diff.length; index++) {
     if (diff[index].checked) {
-      difficulty = diff[index].value
+      difficulty = diff[index].value;
     }
   }
-
   CELLS.forEach((element) => {
     element.innerText = null;
-    element.classList.remove('selected')
-    element.classList.remove('selectable')
+    element.classList.remove("selected");
+    element.classList.remove("selectable");
   });
   BUTTONS.forEach((element) => {
     element.removeEventListener("click", handleButtonClick);
   });
-  PUZZLE2 = [];
-  Message.classList.remove('show');
   BUTTONS.forEach((element) => {
     element.addEventListener("click", handleButtonClick);
   });
+  // document.getElementById("seconds").innerHTML = '';
+  // document.getElementById("minutes").innerHTML = '';
+  // document.getElementById("hours").innerHTML = '';
+  Message.classList.remove("show");
   genPuz();
   swapCells();
   plotGrid();
   anime({
-    targets: '.cell',
+    targets: ".cell",
     opacity: 1,
     scale: [{
-        value: .1,
-        easing: 'easeOutSine',
-        duration: 1000
+        value: 0.1,
+        easing: "easeOutSine",
+        duration: 1000,
       },
       {
         value: 1,
-        easing: 'easeInOutQuad',
-        duration: 10
-      }
+        easing: "easeInOutQuad",
+        duration: 10,
+      },
     ],
     delay: anime.stagger(100, {
       grid: [9, 9],
-      from: 'center'
-    })
-  })
+      from: "center",
+    }),
+  });
   timer();
 }
 
@@ -175,13 +175,20 @@ function handleClick(e) {
 
 function handleButtonClick(e) {
   let value = e.target.innerText;
+  if (selectedCell.id == undefined) return;
   let id = Number(selectedCell.id);
   selectedCell.innerText = e.target.innerText;
+  // if (e.target.innerText == "") {
+  //   selectedCell.classList.remove('red')
+  //   return
+  // }
   checkDuplicate(id, value);
   checkCurrectValue(id, value);
   if (checkWin()) {
-    messageText.innerText = 'YOU WIN'
-    Message.classList.add('show');
+    messageText.innerText = "YOU WIN";
+    messageImg.style.display = "block";
+    // Message.
+    Message.classList.add("show");
     clearInterval(clock);
   }
 }
@@ -298,10 +305,8 @@ function removeDuplicateClass() {
 
 function checkCurrectValue(id, value) {
   for (let index = 0; index < PUZZLE2.length; index++) {
-
-    if ((index + 1) == id) {
-      if (PUZZLE2[index] != value) {
-        // console.log(value, "checkCurrentValue");
+    if (index + 1 == id) {
+      if (PUZZLE2[index] != value && value != '') {
         addDuplicateClass(id);
       } else {
         removeDuplicateClass(id);
@@ -314,10 +319,10 @@ function checkWin() {
   // console.log(PUZZLE2);
   for (let index = 0; index < PUZZLE2.length; index++) {
     if (PUZZLE2[index] != document.getElementById(index + 1).innerText) {
-      return false
+      return false;
     }
   }
-  return true
+  return true;
 }
 
 function timer() {
@@ -328,14 +333,16 @@ function timer() {
   }
   clock = setInterval(function () {
     document.getElementById("seconds").innerHTML = pad(++sec % 60);
-    document.getElementById("minutes").innerHTML = pad(parseInt((sec / 60) % 60, 10));
-    document.getElementById("hours").innerHTML = pad(parseInt(sec / (60 * 60), 10));
-  }, 1000)
+    document.getElementById("minutes").innerHTML = pad(
+      parseInt((sec / 60) % 60, 10)
+    );
+    document.getElementById("hours").innerHTML = pad(
+      parseInt(sec / (60 * 60), 10)
+    );
+  }, 1000);
 }
 
-
-
-messageText.innerText = 'WELCOME TO SUDOKU WEB'
+messageText.innerText = "WELCOME TO SUDOKU WEB";
 startButton.addEventListener("click", startGame);
-startButton.innerText = 'START GAME'
-restartButton.addEventListener('click', restartGame);
+startButton.innerText = "START GAME";
+restartButton.addEventListener("click", restartGame);

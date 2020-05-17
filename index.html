@@ -15,7 +15,7 @@
 <body>
     <div class="header">
         <h1> Sudoku Game</h1>
-        <div class="timer">
+        <div id="timer" class="timer">
             <span id="hours"></span>:<span id="minutes"></span>:<span id="seconds"></span>
         </div>
 
@@ -119,8 +119,11 @@
     </div>
 
     <div class="message show">
-        <img src="trophy.png" id="messageImg" width="200px" style="display:none;" alt="">
+        <img src="trophy.png" id="messageImg" class="messageImg" width="200px" style="display:none;" alt="">
+        <!-- <img src="trophy.png" class="messageImg" id="messageImg" width="200px" style="" alt=""> -->
         <div id="messageText" class="text">YOU WIN</div>
+        <div id="timerDiv">
+        </div>
         <span><b>CHOOSE DIFFICULTY</b></span>
         <div>
             <div>

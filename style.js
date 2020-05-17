@@ -6,13 +6,24 @@ const startButton = document.getElementById("startButton");
 const restartButton = document.getElementById("restartGame");
 const messageText = document.getElementById("messageText");
 const diff = document.getElementsByName("diff");
-const standardHideDiff = 32;
+const timeing = document.getElementById("timer");
+let timerDiv = document.getElementById("timerDiv");
+
+// console.log(timeing)
+// console.log(timerDiv);
+// // console.log(timerDiv = timerDiv.innerHTML + timeing.innerHTML)
+// p_prime = timeing.cloneNode(true)
+// console.log(timerDiv.appendChild(p_prime))
+
+const standardHideDiff = 5;
 let difficulty;
 
 let PUZZLE = [];
 let PUZZLE2 = [];
 let selectedCell;
 let clock;
+
+
 
 function plotGrid() {
   let hiddenCells = hideCells();
@@ -29,7 +40,7 @@ function plotGrid() {
 
 function hideCells() {
   let Hide = [];
-  let hiddenSpaces = standardHideDiff + (difficulty * 10);
+  let hiddenSpaces = standardHideDiff + difficulty * 10;
   for (let index = 0; index < hiddenSpaces; index++) {
     let value = Math.ceil(Math.random() * 81);
     if (Hide.includes(value)) {
@@ -91,6 +102,20 @@ function genPuz() {
 function restartGame() {
   clearInterval(clock);
   messageText.innerText = "";
+  CELLS.forEach((element) => {
+    element.innerText = null;
+    element.classList.remove("selected");
+    element.classList.remove("selectable");
+    element.classList.remove("red");
+    element.removeEventListener("click", handleClick);
+  });
+  BUTTONS.forEach((element) => {
+    element.removeEventListener("click", handleButtonClick);
+  });
+  timerDiv.innerHTML = '';
+  cloneCurrentTime = timeing.cloneNode(true)
+  timerDiv.appendChild(cloneCurrentTime)
+
   Message.classList.add("show");
 }
 
@@ -103,16 +128,6 @@ function startGame() {
       difficulty = diff[index].value;
     }
   }
-  CELLS.forEach((element) => {
-    element.innerText = null;
-    element.classList.remove("selected");
-    element.classList.remove("selectable");
-    element.classList.remove("red");
-    element.removeEventListener('click', handleClick);
-  });
-  BUTTONS.forEach((element) => {
-    element.removeEventListener("click", handleButtonClick);
-  });
   BUTTONS.forEach((element) => {
     element.addEventListener("click", handleButtonClick);
   });
@@ -154,7 +169,6 @@ function swapCells() {
     }
     swapArray.push([firstValue, secondValue]);
   }
-  // console.log(swapArray);
   swapArray.forEach((swap) => {
     for (let index = 0; index < PUZZLE2.length; index++) {
       if (swap.includes(PUZZLE2[index])) {
@@ -164,7 +178,6 @@ function swapCells() {
       }
     }
   });
-  // console.log(PUZZLE2);
 }
 
 function handleClick(e) {
@@ -183,52 +196,49 @@ function handleButtonClick(e) {
   CELLS.forEach((item) => {
     item.classList.remove("red");
   });
-
+  //dont touch this order
   checkCurrectValue(id, value);
   checkDuplicate(id, value);
+
   if (checkWin()) {
     messageText.innerText = "YOU WIN";
     messageImg.style.display = "block";
-    // Message.
     Message.classList.add("show");
     clearInterval(clock);
+
+    anime({
+      targets: ".messageImg",
+      rotateY: '360',
+      easing: 'easeInOutQuad',
+      loop: true
+    });
   }
 }
 
 function getDuplicateArrayElements(arr) {
-  var sorted_arr = arr.slice().sort();
+
+  var sorted_arr = arr.slice().sort(function (a, b) {
+    return b[1] - a[1];
+  });
   var results = [];
   for (var i = 0; i < sorted_arr.length - 1; i++) {
-    if (sorted_arr[i + 1] === sorted_arr[i] && sorted_arr[i] != "") {
+    if (sorted_arr[i + 1][1] === sorted_arr[i][1] && sorted_arr[i][1] != "") {
       results.push(sorted_arr[i]);
+      results.push(sorted_arr[i + 1]);
     }
   }
   return results;
 }
 
 function duplicatesLogic(Arr) {
-  let rowValues = [];
-
-  Arr.forEach((element) => {
-    let rowValue = document.getElementById(element).innerText;
-    rowValues.push(rowValue);
+  let rowValues = Arr.map((element) => {
+    return [element, document.getElementById(element).innerText];
   });
-
   let duplicatesArray = getDuplicateArrayElements(rowValues);
-  let results = [];
-  let index;
 
-  duplicatesArray.forEach((item) => {
-    while ((index = rowValues.indexOf(item)) != -1) {
-      results.push(index + results.length);
-      rowValues.splice(index, 1);
-    }
-  });
-
-  let indexx = results.map((element) => {
-    return Arr[element];
-  });
-
+  let indexx = duplicatesArray.map(item => {
+    return item[0]
+  })
   return indexx;
 }
 
@@ -242,25 +252,20 @@ function checkDuplicate(id, value) {
 
   for (let index = 1; index <= 81; index = index + 9) {
     let ROW = [];
-    let Vals = [];
     for (let i = index; i < 9 + index; i++) {
       ROW.push(i);
     }
     let deplicateIndex = duplicatesLogic(ROW);
-
     if (deplicateIndex.length) {
       addDuplicateClass(...deplicateIndex);
     }
   }
-
   // CHECK DUPILICATE COLUMNS
   for (let index = 1; index <= 9; index++) {
-    // console.log(index)
     let COL = [];
     for (let i = index; i <= 9 * 8 + index; i = i + 9) {
       COL.push(i);
     }
-
     let deplicateIndex = duplicatesLogic(COL);
     if (deplicateIndex.length) {
       addDuplicateClass(...deplicateIndex);
@@ -277,19 +282,19 @@ function checkDuplicate(id, value) {
         if (!(indexxx % 3)) {
           begin = begin + 6;
         }
-        begin++
+        begin++;
       }
+      // debugger;
       let deplicateIndex = duplicatesLogic(block);
       if (deplicateIndex.length) {
         addDuplicateClass(...deplicateIndex);
       }
-      begin = block[0]
-      begin = begin + 3
-      ending = block[8] + 1
+      begin = block[0];
+      begin = begin + 3;
+      ending = block[8] + 1;
     }
-    begin = ending
+    begin = ending;
   }
-
 }
 
 function addDuplicateClass() {
@@ -309,7 +314,7 @@ function removeDuplicateClass() {
 function checkCurrectValue(id, value) {
   for (let index = 0; index < PUZZLE2.length; index++) {
     if (index + 1 == id) {
-      if (PUZZLE2[index] != value && value != '') {
+      if (PUZZLE2[index] != value && value != "") {
         addDuplicateClass(id);
       } else {
         removeDuplicateClass(id);
@@ -319,7 +324,6 @@ function checkCurrectValue(id, value) {
 }
 
 function checkWin() {
-  // console.log(PUZZLE2);
   for (let index = 0; index < PUZZLE2.length; index++) {
     if (PUZZLE2[index] != document.getElementById(index + 1).innerText) {
       return false;

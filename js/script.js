@@ -15,7 +15,7 @@ let timerDiv = document.getElementById("timerDiv");
 // p_prime = timeing.cloneNode(true)
 // console.log(timerDiv.appendChild(p_prime))
 
-const standardHideDiff = 1;
+const standardHideDiff = 33;
 let difficulty;
 
 let PUZZLE = [];

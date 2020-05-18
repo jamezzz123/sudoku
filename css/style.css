@@ -50,6 +50,8 @@ h1 {
     transition: 300ms linear;
 }
 
+
+
 .cell {
     opacity: 0;
 }
@@ -208,4 +210,32 @@ button:hover {
 .timer {
     font-size: 40px;
     color: var(--var-primaryColor);
+    text-align: center;
+    margin: 5px;
+}
+
+@media (max-width:380px){
+    .board .cell {
+        color: red;
+        height: calc(var(--var-width)* 0.7);
+        width: calc(var(--var-width) * 0.7);
+        font-size: calc(calc(var(--var-width)* 0.7) * 0.9);
+    }
+
+    .button {
+        
+        height: calc(var(--var-width)* 0.8);
+        width: calc(var(--var-width) * 0.8);
+        font-size: calc(calc(var(--var-width)* 0.7) * 0.9);
+    }
+    button {
+        padding: 10px;
+        font-size: 35px;
+        margin: 6px;
+    }
+    .header h1 {
+       margin: 5px;
+       font-size: 20px;
+    }
+
 }

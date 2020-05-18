@@ -216,7 +216,6 @@ button:hover {
 
 @media (max-width:380px){
     .board .cell {
-        color: red;
         height: calc(var(--var-width)* 0.7);
         width: calc(var(--var-width) * 0.7);
         font-size: calc(calc(var(--var-width)* 0.7) * 0.9);
@@ -236,6 +235,9 @@ button:hover {
     .header h1 {
        margin: 5px;
        font-size: 20px;
+    }
+    #messageText{
+        font-size: 38px ;
     }
 
 }

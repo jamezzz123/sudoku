@@ -15,7 +15,7 @@ let timerDiv = document.getElementById("timerDiv");
 // p_prime = timeing.cloneNode(true)
 // console.log(timerDiv.appendChild(p_prime))
 
-const standardHideDiff = 33;
+const standardHideDiff = 1;
 let difficulty;
 
 let PUZZLE = [];
@@ -212,6 +212,9 @@ function handleButtonClick(e) {
       easing: 'easeInOutQuad',
       loop: true
     });
+    timerDiv.innerHTML = '';
+    cloneCurrentTime = timeing.cloneNode(true)
+    timerDiv.appendChild(cloneCurrentTime)
   }
 }
 
